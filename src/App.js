@@ -1,52 +1,51 @@
 import { useState } from 'react';
-import './App.css'
+import './App.css';
+
 function App() {
-  const [add, setAdd] = useState([])
-  const [idle, setIdle] = useState('')
-  const [del, setDel] = useState([])
-  const [comp, setComp] = useState([])
+  const [add, setAdd] = useState([]);
+  const [idle, setIdle] = useState('');
+  const [del, setDel] = useState([]);
+  const [comp, setComp] = useState([]);
+
   const dlt = (index) => {
     var temp = add.filter((obj, i) => {
-      if (index !== i)
-        return obj
-      else
-        setDel([...del, obj])
-    })
-    setAdd(temp)
+      if (index !== i) return obj
+      else setDel([...del, obj])
+    });
+    setAdd(temp);
   }
-  const chk = (index) => {
+
+  const taskCompleted = (index) => {
     var temp = add.map((obj, i) => {
       if (index === i) {
-        {
-          setComp([...comp, { text: obj.text, status: true }])
-          return ({})
-        }
+        setComp([...comp, { text: obj.text, status: true }]);
+        return ({});
       }
-      return obj
-    })
-    setAdd(temp)
+      return obj;
+    });
+    setAdd(temp);
   }
-  const abc = (index) => {
+
+  const notCompleted = (index) => {
     var temp = comp.filter((obj, i) => {
-      if (index === i)
-        setAdd([...add, { text: obj.text, status: false }])
-      else
-        return (obj)
-    })
-    setComp(temp)
+      if (index === i) setAdd([...add, { text: obj.text, status: false }]);
+      else return (obj);
+    });
+    setComp(temp);
   }
+
   return (
     <div>
       <header>
         <h1>ToDo App</h1>
       </header>
       <section>
-        <div className='body'>
+        <div>
           <div className='input-section'>
-            <div className='input'>
+            <div className='taskInput'>
               <i class="fas fa-pen"></i>
               <input value={idle} onChange={(e) => setIdle(e.target.value)} type="text" placeholder='What next?' />
-              <i onClick={() => { setAdd([...add, { text: idle, status: false }]); setIdle('') }} class="fas fa-plus"></i>
+              <i onClick={() => { setAdd([...add, { text: idle, status: false }]); setIdle('') }} class="fas fa-plus plusIcon"></i>
             </div>
           </div>
           <div className='flex-container'>
@@ -69,9 +68,9 @@ function App() {
                   if (obj.status === false) {
                     return (
                       <div className='box2'>
-                        <input onClick={() => { chk(index) }} type="checkbox" checked={obj.status} />
+                        <input className='toCompChk' onClick={() => { taskCompleted(index) }} type="checkbox" checked={obj.status} />
                         {obj.text}
-                        <i onClick={() => { dlt(index) }} class="fas fa-trash-alt"></i>
+                        <i onClick={() => { dlt(index) }} class="fas fa-trash-alt toCompDel"></i>
                       </div>
                     )
                   }
@@ -84,7 +83,7 @@ function App() {
                 comp.map((obj, index) => {
                   return (
                     <div className='box3'>
-                      <input onClick={() => { abc(index) }} type="checkbox" id='box3' checked={obj.status} />
+                      <input onClick={() => { notCompleted(index) }} type="checkbox" id='box3' checked={obj.status} />
                       <label htmlFor="box3">{obj.text}</label>
                     </div>
                   )
